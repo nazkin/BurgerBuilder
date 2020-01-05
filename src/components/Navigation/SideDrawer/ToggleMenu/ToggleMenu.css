@@ -1,0 +1,27 @@
+.ToggleMenu {
+    width: auto;
+    height: 60%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2px 3px;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin-left: 10px;
+    border: 2px solid rgb(76, 155, 207);
+    color: linen;
+    background: rgb(161, 111, 18);
+}
+
+/* .ToggleMenu div {
+    width: 90%;
+    height: 3px;
+    background-color: white;
+}
+
+@media (min-width: 550px) {
+    .ToggleMenu {
+        display: none;
+    } 
+}*/

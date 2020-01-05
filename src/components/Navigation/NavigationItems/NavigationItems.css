@@ -1,0 +1,22 @@
+
+.NavigationItems {
+    color: linen;
+    list-style: none;
+    display: flex;
+    flex-direction: row;   
+    font-family: inherit;
+    font-style: bold;
+}
+
+.NavigationItems li {
+    border-bottom: 3px solid transparent;
+    margin: 0 3px;
+    padding: 10px 6px;
+    background-color: rgb(165, 94, 8, 0.9);
+}
+
+.NavigationItems li:hover {
+    background-color: rgb(165, 94, 8);
+    cursor: pointer;
+    border-bottom: 3px solid rgb(41, 113, 161);
+}
