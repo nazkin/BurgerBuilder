@@ -5,6 +5,10 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/Controls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import axios from '../../axiosrequests';
+import Spinner from '../../components/Spinner/Spinner';
+import ErrorHandler from '../../hoc/errorHandler/errorHandler';
+
 const INGREDIENT_COST = {
     salad: 0.25,
     cheese: 0.50,
@@ -27,7 +31,8 @@ class BurgaBuilda extends Component {
         },
         totalPrice: 2.50, 
         canPurchase: false,
-        isPurchasing: false
+        isPurchasing: false, 
+        loading: false
     }
 
     isPurchasingHandler = () => {
@@ -52,7 +57,21 @@ class BurgaBuilda extends Component {
     }
 
     continuePurchaseHandler = () => {
-        alert("You are going to continue to checkout");
+        const queryParams = [];
+        //Loop through my state.ingredients object
+        //Retrieve each ingredient, encode it in our url and add to queryParams array
+        //We are essentially creating a URI query manually and passing it to a route
+        for(let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i]));
+        }
+        queryParams.push("price="+this.state.totalPrice);
+        //returns [bacon=1, salad=1, etc]
+        const queryString = queryParams.join("&");
+        //returns bacon=1&salad=1 etc
+       this.props.history.push({
+           pathname: "/checkout",
+           search: "?"+ queryString
+       });     
     }
     
     
@@ -91,6 +110,7 @@ class BurgaBuilda extends Component {
 
     }
 
+
     render() {
         const infoFilter = {
             ...this.state.ingredients
@@ -99,17 +119,22 @@ class BurgaBuilda extends Component {
             infoFilter[key] = infoFilter[key] <= 0;
         }
         //will return: {salad: true, bacon: false, ...}
-        
+        let summaryOfOrder =     <OrderSummary
+                                         purchaseContinue = {this.continuePurchaseHandler}
+                                         purchaseCancel   = {this.cancelPurchaseHandler}
+                                         ingredients      = {this.state.ingredients}
+                                         cost             = {this.state.totalPrice} />;
+
+        if(this.state.loading === true){
+           summaryOfOrder =  <Spinner />;
+        }
         return(
            <Aux>
               <Modal
                show        = {this.state.isPurchasing}
                modalClosed = {this.cancelPurchaseHandler}>
-                  <OrderSummary
-                   purchaseContinue = {this.continuePurchaseHandler}
-                   purchaseCancel   = {this.cancelPurchaseHandler}
-                   ingredients      = {this.state.ingredients}
-                   cost             = {this.state.totalPrice} />
+                   {/* spinner or order summary depending on loading state */}
+                   {summaryOfOrder} 
               </Modal>
               <Burger ingredients = {this.state.ingredients}/> 
               <BuildControls 
@@ -125,4 +150,4 @@ class BurgaBuilda extends Component {
     }
 }
 
-export default BurgaBuilda;
+export default ErrorHandler(BurgaBuilda, axios);
