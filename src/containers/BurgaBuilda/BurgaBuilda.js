@@ -8,7 +8,7 @@ import axios from '../../axiosrequests';
 import Spinner from '../../components/Spinner/Spinner';
 import ErrorHandler from '../../hoc/errorHandler/errorHandler';
 import {connect} from 'react-redux';
-import * as actionTypes from '../../store/actions/actionTypes';
+import * as actions from '../../store/actions/index';
 
 
 
@@ -18,6 +18,10 @@ class BurgaBuilda extends Component {
     state = {
         isPurchasing: false, 
         loading: false
+    }
+
+    componentDidMount(){
+        this.props.onInitIngredients();
     }
 
     isPurchasingHandler = () => {
@@ -43,23 +47,8 @@ class BurgaBuilda extends Component {
         this.setState({isPurchasing: false})
     }
 
-    continuePurchaseHandler = () => {
-        // const queryParams = [];
-        // //Loop through my state.ingredients object
-        // //Retrieve each ingredient, encode it in our url and add to queryParams array
-        // //We are essentially creating a URI query manually and passing it to a route
-        // for(let i in this.state.ingredients){
-        //     queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i]));
-        // }
-        // queryParams.push("price="+this.state.totalPrice);
-        // //returns [bacon=1, salad=1, etc]
-        // const queryString = queryParams.join("&");
-        // //returns bacon=1&salad=1 etc
-    //    this.props.history.push({
-    //        pathname: "/checkout",
-    //        search: "?"+ queryString
-    //    }); 
-       
+    continuePurchaseHandler = () => {  
+       this.props.onInitPurchase();   
        this.props.history.push('/checkout');
     }
     
@@ -104,14 +93,17 @@ class BurgaBuilda extends Component {
 
 const mapStateToProps = (state)=>{
     return {
-        ings: state.ingredients,
-        price: state.totalPrice
+        ings: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error
     }
 }
 const mapDispatchToProps =(dispatch)=> {
     return{
-        onIngredientAdded: (name)=> dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: name}),
-        onIngredientRemoved: (name)=> dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: name})
+        onIngredientAdded: (name)=> dispatch(actions.addIngredient(name)), //{type: actionTypes.ADD_INGREDIENT, ingredientName: name}
+        onIngredientRemoved: (name)=> dispatch(actions.removeIngredient(name)),
+        onInitPurchase: ()=> dispatch(actions.purchaseInit()),
+        onInitIngredients: ()=> dispatch(actions.setIngredients())
     }
 }
 

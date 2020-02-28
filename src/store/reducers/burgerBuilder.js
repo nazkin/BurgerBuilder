@@ -14,12 +14,24 @@ const initialState = {
         bacon: 0, 
         cheese: 0
     },
-    totalPrice: 2.50
+    totalPrice: 2.50,
+    error: false
 
 }
 
 const reducer = (state = initialState, action)=> {
     switch(action.type){
+        case actionTypes.SET_INGREDIENTS:
+            return {
+                ...state,
+                ingredients: {
+                    salad: 0,
+                    meat: 0,
+                    bacon: 0, 
+                    cheese: 0
+                },
+                totalPrice: 2.50
+            }
         case actionTypes.ADD_INGREDIENT:
             return {
                 //This double spread operator is necessary to copy the entire object
