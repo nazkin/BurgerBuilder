@@ -9,7 +9,8 @@
     background-color: linen;
     padding: 32px 16px;
     box-sizing: border-box;
-    display: flex; 
+    display: flex;
+    flex-wrap: wrap; 
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -19,9 +20,7 @@
 .DrawerNavigation {
     width: 100%;
     background: lightgoldenrodyellow;
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
+ 
 }
 @media (min-width: 550px){
     .SideDrawer{
