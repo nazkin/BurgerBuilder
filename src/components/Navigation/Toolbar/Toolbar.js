@@ -7,7 +7,7 @@ import ToggleMenu from '../SideDrawer/ToggleMenu/ToggleMenu';
 const toolbar = (props) => {
     return(
        <header className={classes.Toolbar}>
-           <ToggleMenu clicked = {props.toggleClicked}/>
+           {/* <ToggleMenu clicked = {props.toggleClicked}/> */}
             <Logo height = "80%"/>
           <nav>
           <NavigationItems

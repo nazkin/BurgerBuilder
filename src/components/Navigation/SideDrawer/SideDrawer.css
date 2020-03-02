@@ -22,7 +22,7 @@
     background: lightgoldenrodyellow;
  
 }
-@media (min-width: 550px){
+@media (min-width: 400px){
     .SideDrawer{
         display: none;
     }
