@@ -1,15 +1,18 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
+
+
 export const authStart = ()=> {
     return{
         type: actionTypes.AUTH_START
     }
 }
 
-export const authSuccess = (authData)=> {
+export const authSuccess = (token, id)=> {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        authData: authData
+        idToken: token,
+        userId: id
     }
 }
 
@@ -17,6 +20,19 @@ export const authFail = (err)=> {
     return {
         type: actionTypes.AUTH_FAIL,
         error: err
+    }
+}
+export const logout = ()=> {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
+
+export const authTimeout = (expirationTime)=> {
+    return dispatch=> {
+        setTimeout(()=> {
+            dispatch(logout());
+        }, expirationTime * 1000)
     }
 }
 export const auth = (email, password, isSignUp)=> {
@@ -35,11 +51,11 @@ export const auth = (email, password, isSignUp)=> {
         axios.post(url, authData)
             .then(response=> {
                 console.log(response);
-                dispatch(authSuccess(response));
+                dispatch(authSuccess(response.data.idToken, response.data.localId));
+                dispatch(authTimeout(response.data.expiresIn))
             })
             .catch(err=> {
-                console.log(err);
-                dispatch(authFail(err));
+                dispatch(authFail(err.response.data.error));
             });
     }
 }

@@ -9,6 +9,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import ErrorHandler from '../../hoc/errorHandler/errorHandler';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -69,8 +70,13 @@ class BurgaBuilda extends Component {
         if(this.state.loading === true){
            summaryOfOrder =  <Spinner />;
         }
+        let authRedirect = null;
+        if(!this.props.isAuth){
+            authRedirect = <Redirect to="/auth"/>
+        }
         return(
            <Aux>
+               {authRedirect}
               <Modal
                show        = {this.state.isPurchasing}
                modalClosed = {this.cancelPurchaseHandler}>
@@ -95,7 +101,8 @@ const mapStateToProps = (state)=>{
     return {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        error: state.burgerBuilder.error
+        error: state.burgerBuilder.error, 
+        isAuth: state.auth.token !== null
     }
 }
 const mapDispatchToProps =(dispatch)=> {

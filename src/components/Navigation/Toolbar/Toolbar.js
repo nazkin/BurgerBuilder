@@ -10,7 +10,8 @@ const toolbar = (props) => {
            <ToggleMenu clicked = {props.toggleClicked}/>
             <Logo height = "80%"/>
           <nav>
-          <NavigationItems ></NavigationItems>    
+          <NavigationItems
+          isAuth={props.isAuth} ></NavigationItems>    
           </nav>     
        </header>
     )
